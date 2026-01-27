@@ -44,3 +44,19 @@ Power BI connects to `dw.vw_HR_Snapshot` to build dashboards for:
 
 ## Screenshots
 See `/Screenshots` for ETL flow and dashboard examples.
+
+## Screenshots
+
+### SSIS – Load Staging
+![SSIS Package 01 Control Flow](Screenshots/ssis_package01_control_flow.png)
+
+![SSIS Package 01 Data Flow](Screenshots/ssis_package01_data_flow.png)
+
+### SSIS – Load Data Warehouse
+![SSIS Package 02 Control Flow](Screenshots/ssis_package02_control_flow.png)
+
+![SSIS Package 02 Data Flow](Screenshots/ssis_package02_data_flow.png)
+
+### Power BI Dashboard
+![Power BI Dashboard](Screenshots/powerbi_dashboard.png)
+
