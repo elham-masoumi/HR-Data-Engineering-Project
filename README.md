@@ -1,35 +1,46 @@
-# HR-Data-Engineering-Project
-This project demonstrates an end-to-end HR data pipeline using SQL Server and Power BI.
+# HR Data Warehouse ETL (SQL Server + SSIS + Power BI)
 
-## Data Loading (Staging)
-- Source: IBM HR Analytics Employee Attrition dataset (CSV)
-- Loaded into SQL Server as a staging table: `dbo.stg_hr_employee_raw`
-- Purpose: preserve the raw structure and prepare the data for validation and transformation before loading to the data warehouse.
+## Overview
+End-to-end HR data engineering project demonstrating a layered architecture:
+CSV source → SQL Server Staging → Data Warehouse (Star Schema) → Power BI reporting.
 
-## Data Quality Checks
-Basic validation checks are performed on the staging table (row counts, null checks, duplicates, and value ranges) before building the warehouse schema.
+## Dataset
+IBM HR Analytics Employee Attrition dataset (CSV).
 
-## Data Warehouse (SQL Server)
-A simple HR data warehouse was built using a star schema:
+## Tech Stack
+- SQL Server (SSMS)
+- SSIS (Visual Studio)
+- Power BI
+- GitHub
 
-**Staging**
-- `dbo.stg_hr_employee_raw` (raw CSV load)
+## Architecture
+- **Staging:** `dbo.stg_hr_employee_raw` (raw CSV load)
+- **Warehouse (dw schema):**
+  - Dimensions: `dw.DimEmployee`, `dw.DimDepartment`, `dw.DimJobRole`, `dw.DimEducation`, `dw.DimDate`
+  - Fact: `dw.FactEmployeeSnapshot` (PK: SnapshotDateKey + EmployeeKey)
+- **BI View:** `dw.vw_HR_Snapshot`
 
-**Dimensions (dw)**
-- `dw.DimEmployee`
-- `dw.DimDepartment`
-- `dw.DimJobRole`
-- `dw.DimEducation`
-- `dw.DimDate` (snapshot date)
+## ETL (SSIS)
+### Package 01: `01_Load_Staging.dtsx`
+- Loads the CSV file into SQL Server staging
+- Handles data type conversions and ensures consistent staging loads
 
-**Fact (dw)**
-- `dw.FactEmployeeSnapshot` (employee snapshot metrics + attrition flag)
+### Package 02: `02_Load_DW.dtsx`
+- Loads dimensions from staging
+- Ensures daily snapshot date in `dw.DimDate`
+- Deletes existing snapshot rows for the load date and reloads the fact table
+- Loads `dw.FactEmployeeSnapshot` using Lookup transforms (surrogate keys)
 
-## ETL (SQL-based)
-- Loaded raw CSV into staging
-- Populated dimension tables using `SELECT DISTINCT`
-- Loaded the snapshot fact table using surrogate keys from dimensions
-- Performed basic validation checks (row counts, duplicates)
+## Data Quality & Validation
+- Record counts validated between staging and fact table (1470 rows)
+- Basic checks for duplicates and nulls in key fields
 
-## BI Consumption
-- Power BI connects to the warehouse tables and/or `dw.vw_HR_Snapshot` view for reporting.
+## Power BI
+Power BI connects to `dw.vw_HR_Snapshot` to build dashboards for:
+- Headcount
+- Attrition rate
+- Attrition by department and job role
+- Income and tenure analysis
+
+## Screenshots
+See `/Screenshots` for ETL flow and dashboard examples.
