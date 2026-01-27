@@ -43,6 +43,61 @@ Power BI connects to `dw.vw_HR_Snapshot` to build dashboards for:
 - Attrition by department and job role
 - Income and tenure analysis
 
+
+## How to Run the Project Locally
+
+### Prerequisites
+- SQL Server (LocalDB or full instance)
+- SQL Server Management Studio (SSMS)
+- Visual Studio with SQL Server Integration Services (SSIS)
+- Power BI Desktop
+
+### Step 1: Database and Schema Setup
+Run the following script in SSMS to create the database and data warehouse schema:
+- `SQL/00_setup.sql`
+
+### Step 2: Create Staging Table
+Create the staging table structure:
+- `SQL/01_staging_table.sql`
+
+### Step 3: Create Data Warehouse Tables
+Create all dimension and fact tables:
+- `SQL/02_dw_tables.sql`
+
+### Step 4: Load Staging Data (SSIS)
+Open the SSIS solution in Visual Studio and run:
+- `01_Load_Staging.dtsx`
+
+This package loads the raw HR CSV file into the staging table
+`dbo.stg_hr_employee_raw`.
+
+### Step 5: Load Dimensions and Fact (SSIS)
+Run the second SSIS package:
+- `02_Load_DW.dtsx`
+
+This package:
+- Loads dimension tables from staging
+- Ensures the snapshot date exists in `dw.DimDate`
+- Deletes existing fact rows for the snapshot date
+- Loads `dw.FactEmployeeSnapshot` using Lookup transforms
+
+### Step 6: Create Reporting View
+Create the BI-friendly view used by Power BI:
+- `SQL/06_view_vw_hr_snapshot.sql`
+
+### Step 7: Validate the Load
+Run basic validation and record count checks:
+- `SQL/07_validation_checks.sql`
+
+### Step 8: Power BI Reporting
+Connect Power BI to SQL Server and use the view:
+- `dw.vw_HR_Snapshot`
+
+Build dashboards for headcount, attrition rate, and workforce analytics.
+
+
+  
+
 ## Screenshots
 See `/Screenshots` for ETL flow and dashboard examples.
 
