@@ -1,1 +1,9 @@
+CREATE DATABASE HR_Project;
+GO
+USE HR_Project;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name='dw')
+    EXEC('CREATE SCHEMA dw');
+GO
 
