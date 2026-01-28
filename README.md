@@ -3,7 +3,6 @@
 ## Overview
 End-to-end HR data engineering project demonstrating a layered architecture:
 CSV source → SQL Server Staging → Data Warehouse (Star Schema) → Power BI reporting.
-Source: IBM HR Analytics Employee Attrition dataset (CSV)
 
 ## Dataset
 IBM HR Analytics Employee Attrition dataset (CSV).
