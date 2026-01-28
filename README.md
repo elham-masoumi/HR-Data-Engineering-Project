@@ -88,11 +88,35 @@ Create the BI-friendly view used by Power BI:
 Run basic validation and record count checks:
 - `SQL/07_validation_checks.sql`
 
-### Step 8: Power BI Reporting
-Connect Power BI to SQL Server and use the view:
-- `dw.vw_HR_Snapshot`
 
-Build dashboards for headcount, attrition rate, and workforce analytics.
+## Semantic Layer (SSAS Tabular)
+
+An SSAS Tabular model was implemented on top of the SQL Server data warehouse to provide
+a centralized semantic layer for analytics and reporting.
+
+### Model Details
+- Model type: SSAS Tabular
+- Source: SQL Server Data Warehouse (`dw` schema)
+- Fact table: `dw.FactEmployeeSnapshot`
+- Dimension tables:
+  - `dw.DimEmployee`
+  - `dw.DimDepartment`
+  - `dw.DimJobRole`
+  - `dw.DimEducation`
+  - `dw.DimDate`
+
+### Relationships
+A star schema is implemented in the tabular model with one-to-many relationships
+from dimensions to the fact table and single-direction cross filtering.
+
+### Core Measures (DAX)
+- **Headcount** – distinct count of employees
+- **Leavers** – employees with attrition flag
+- **Attrition Rate** – ratio of leavers to headcount
+
+### Deployment
+The SSAS Tabular model was successfully deployed to a local Analysis Services instance
+and validated using live connections from Power BI.
 
 
   
@@ -111,6 +135,12 @@ See `/Screenshots` for ETL flow and dashboard examples.
 ![SSIS Package 02 Control Flow](Screenshots/ssis_package02_control_flow.png)
 
 ![SSIS Package 02 Data Flow](Screenshots/ssis_package02_data_flow.png)
+
+### SSAS Model Diagram
+![SSAS Tabular Model](Screenshots/ssas_model_diagram.png)
+
+### SSAS Measures
+![SSAS Measures](Screenshots/ssas_measures.png)
 
 ### Power BI Dashboard
 ![Power BI Dashboard](Screenshots/powerbi_dashboard.png)
