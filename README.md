@@ -98,7 +98,10 @@ live connections from Power BI.
 ---
 
 ## Power BI
-Power BI connects to the SSAS Tabular model via live connection to ensure centralized business logic.
+Power BI connects to the SSAS Tabular model using a live connection. The report includes KPI cards
+(Headcount, Leavers, Attrition Rate), attrition breakdowns by Department and Job Role, and slicers
+for Gender, Marital Status, and Department.
+
 Dashboards include:
 - Headcount
 - Attrition rate
